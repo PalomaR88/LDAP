@@ -4,7 +4,7 @@
 Se van a crear 10 usuarios con nombres en LDAP. Serán objetos de tipo posixAccount e inetOrgPerson con un atributo userPassword.
 
 Se buscan los atributos que contienen las clases posixAccount e inetOrgPerson. Se va a usar la página [zytrax](https://www.zytrax.com/books/ldap/ape/).
-
+------> cambiar esto para crear un glosario
 Atributos de posixAccount: 	
 - Obligatorios:
 ##### cn 

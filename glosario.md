@@ -76,6 +76,12 @@ No obligatorios:
 - description
 
 # atributos
+#### ou 	
+Nombre de la unidad organizativa.
+
+ObjectClass:
+- [organizationalUnit](https://github.com/PalomaR88/LDAP/blob/master/glosario.md#organizationalunit)
+
 #### cn
 CommonName
 
@@ -120,6 +126,7 @@ Contraseña del usuario.
 
 ObjectClass:
 - [posixAccount](https://github.com/PalomaR88/LDAP/blob/master/glosario.md#posixaccount)
+- [organizationalUnit](https://github.com/PalomaR88/LDAP/blob/master/glosario.md#organizationalunit)
 
 #### loginShell 
 Shell del usuario.
@@ -138,6 +145,7 @@ Descripción.
 
 ObjectClass:
 - [posixAccount](https://github.com/PalomaR88/LDAP/blob/master/glosario.md#posixaccount)
+- [organizationalUnit](https://github.com/PalomaR88/LDAP/blob/master/glosario.md#organizationalunit)
 
 #### audio 
 Permite almacenar audio.
@@ -150,6 +158,7 @@ Categoría de negocio.
 
 ObjectClass:
 - [inetOrgPerson](https://github.com/PalomaR88/LDAP/blob/master/glosario.md#inetorgperson)
+- [organizationalUnit](https://github.com/PalomaR88/LDAP/blob/master/glosario.md#organizationalunit)
 
 
 #### carLicense 
@@ -317,3 +326,115 @@ ObjectClass:
 
 ObjectClass:
 - [inetOrgPerson](https://github.com/PalomaR88/LDAP/blob/master/glosario.md#inetorgperson)
+
+#### searchGuide
+Guía de búsqueda.
+
+ObjectClass:
+- [organizationalUnit](https://github.com/PalomaR88/LDAP/blob/master/glosario.md#organizationalunit)
+
+#### seeAlso 
+Ver más.
+
+ObjectClass:
+- [organizationalUnit](https://github.com/PalomaR88/LDAP/blob/master/glosario.md#organizationalunit)
+
+
+#### x121Address 
+Direcciones x.121.
+
+ObjectClass:
+- [organizationalUnit](https://github.com/PalomaR88/LDAP/blob/master/glosario.md#organizationalunit)
+
+#### registeredAddress 
+Dirección registrada.
+
+ObjectClass:
+- [organizationalUnit](https://github.com/PalomaR88/LDAP/blob/master/glosario.md#organizationalunit)
+
+#### destinationIndicator 
+Indicador de destino.
+
+ObjectClass:
+- [organizationalUnit](https://github.com/PalomaR88/LDAP/blob/master/glosario.md#organizationalunit)
+
+#### preferredDeliveryMethod 
+Preferencias en el meétodo de entrega.
+
+ObjectClass:
+- [organizationalUnit](https://github.com/PalomaR88/LDAP/blob/master/glosario.md#organizationalunit)
+
+#### telexNumber 
+Número de teletipo.
+
+ObjectClass:
+- [organizationalUnit](https://github.com/PalomaR88/LDAP/blob/master/glosario.md#organizationalunit)
+
+#### teletexTerminalIdentifier 
+Identificador de terminal teletex.
+
+ObjectClass:
+- [organizationalUnit](https://github.com/PalomaR88/LDAP/blob/master/glosario.md#organizationalunit)
+
+#### telephoneNumber 
+Número de teléfono.
+
+ObjectClass:
+- [organizationalUnit](https://github.com/PalomaR88/LDAP/blob/master/glosario.md#organizationalunit)
+
+#### internationaliSDNNumber 
+Número iSDN.
+
+ObjectClass:
+- [organizationalUnit](https://github.com/PalomaR88/LDAP/blob/master/glosario.md#organizationalunit)
+
+#### facsimileTelephoneNumber 
+Fax.
+
+ObjectClass:
+- [organizationalUnit](https://github.com/PalomaR88/LDAP/blob/master/glosario.md#organizationalunit)
+
+#### street 
+Calle.
+
+ObjectClass:
+- [organizationalUnit](https://github.com/PalomaR88/LDAP/blob/master/glosario.md#organizationalunit)
+
+#### postOfficeBox 
+Apartado de correos.
+
+ObjectClass:
+- [organizationalUnit](https://github.com/PalomaR88/LDAP/blob/master/glosario.md#organizationalunit)
+
+#### postalCode 
+Código Postal.
+
+ObjectClass:
+- [organizationalUnit](https://github.com/PalomaR88/LDAP/blob/master/glosario.md#organizationalunit)
+
+#### postalAddress 
+Dirección postal.
+
+ObjectClass:
+- [organizationalUnit](https://github.com/PalomaR88/LDAP/blob/master/glosario.md#organizationalunit)
+
+#### physicalDeliveryOfficeName 
+Nombre de la óficina de entrega física.
+
+ObjectClass:
+- [organizationalUnit](https://github.com/PalomaR88/LDAP/blob/master/glosario.md#organizationalunit)
+
+#### st 
+Provincia o estado.
+
+ObjectClass:
+- [organizationalUnit](https://github.com/PalomaR88/LDAP/blob/master/glosario.md#organizationalunit)
+
+#### l 
+Localidad. 
+
+ObjectClass:
+- [organizationalUnit](https://github.com/PalomaR88/LDAP/blob/master/glosario.md#organizationalunit)
+
+
+

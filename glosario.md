@@ -6,11 +6,13 @@ Obligatorios:
 - uidNumber 
 - gidNumber 
 - homeDirectory
+
 No obligatorios:
 - userPassword 
 - loginShell 
 - gecos 
 - description 	
+
 Esquema: nis.schema
 
 ## inetOrgPerson

@@ -15,11 +15,12 @@ No obligatorios:
 
 Esquema: nis.schema
 
-## inetOrgPerson
+#### inetOrgPerson
 
 # atributos
-#### cn 
+#### cn
 CommonName
+
 ObjectClass:
 - person
 - organizationalPerson

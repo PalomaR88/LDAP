@@ -48,7 +48,32 @@ No obligatorios:
 #### top
 Clase de objeto abstracto que es el padre de cada clase de objeto LDAP. Es el que define que cada objeto en LDAP debe tener un atributo objectClass.
 
+#### organizationalUnit
+Obligatorios:
+- ou 	
 
+No obligatorios:
+- [userPassword](https://github.com/PalomaR88/LDAP/blob/master/glosario.md#userpassword) 
+- searchGuide 
+- seeAlso 
+- businessCategory 
+- x121Address 
+- registeredAddress 
+- destinationIndicator 
+- preferredDeliveryMethod 
+- telexNumber 
+- teletexTerminalIdentifier 
+- telephoneNumber 
+- internationaliSDNNumber 
+- facsimileTelephoneNumber 
+- street 
+- postOfficeBox 
+- postalCode 
+- postalAddress 
+- physicalDeliveryOfficeName 
+- st 
+- l 
+- description
 
 # atributos
 #### cn

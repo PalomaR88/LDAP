@@ -45,6 +45,10 @@ No obligatorios:
 - [userSMIMECertificate](https://github.com/PalomaR88/LDAP/blob/master/glosario.md#usersmimecertificate) 
 - [userPKCS12](https://github.com/PalomaR88/LDAP/blob/master/glosario.md#userpkcs12)
 
+#### top
+Clase de objeto abstracto que es el padre de cada clase de objeto LDAP. Es el que define que cada objeto en LDAP debe tener un atributo objectClass.
+
+
 
 # atributos
 #### cn

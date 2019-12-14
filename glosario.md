@@ -50,30 +50,30 @@ Clase de objeto abstracto que es el padre de cada clase de objeto LDAP. Es el qu
 
 #### organizationalUnit
 Obligatorios:
-- ou 	
+- [ou](https://github.com/PalomaR88/LDAP/blob/master/glosario.md#ou)
 
 No obligatorios:
 - [userPassword](https://github.com/PalomaR88/LDAP/blob/master/glosario.md#userpassword) 
-- searchGuide 
-- seeAlso 
-- businessCategory 
-- x121Address 
-- registeredAddress 
-- destinationIndicator 
-- preferredDeliveryMethod 
-- telexNumber 
-- teletexTerminalIdentifier 
-- telephoneNumber 
-- internationaliSDNNumber 
-- facsimileTelephoneNumber 
-- street 
-- postOfficeBox 
-- postalCode 
-- postalAddress 
-- physicalDeliveryOfficeName 
-- st 
-- l 
-- description
+- [searchGuide](https://github.com/PalomaR88/LDAP/blob/master/glosario.md#searchguide)
+- [seeAlso](https://github.com/PalomaR88/LDAP/blob/master/glosario.md#seealso)
+- [businessCategory](https://github.com/PalomaR88/LDAP/blob/master/glosario.md#businesscategory)
+- [x121Address](https://github.com/PalomaR88/LDAP/blob/master/glosario.md#x121address)
+- [registeredAddress](https://github.com/PalomaR88/LDAP/blob/master/glosario.md#registeredaddress)
+- [destinationIndicator](https://github.com/PalomaR88/LDAP/blob/master/glosario.md#destinationindicator)
+- [preferredDeliveryMethod](https://github.com/PalomaR88/LDAP/blob/master/glosario.md#preferreddeliverymethod)
+- [telexNumber](https://github.com/PalomaR88/LDAP/blob/master/glosario.md#telexnumber)
+- [teletexTerminalIdentifier](https://github.com/PalomaR88/LDAP/blob/master/glosario.md#teletexterminalidentifier)
+- [telephoneNumber](https://github.com/PalomaR88/LDAP/blob/master/glosario.md#telephonenumber)
+- [internationaliSDNNumber](https://github.com/PalomaR88/LDAP/blob/master/glosario.md#internationalisdnnumber)
+- [facsimileTelephoneNumber](https://github.com/PalomaR88/LDAP/blob/master/glosario.md#facsimiletelephonenumber) 
+- [street](https://github.com/PalomaR88/LDAP/blob/master/glosario.md#street)
+- [postOfficeBox](https://github.com/PalomaR88/LDAP/blob/master/glosario.md#postofficebox)
+- [postalCode](https://github.com/PalomaR88/LDAP/blob/master/glosario.md#postalcode)
+- [postalAddress](https://github.com/PalomaR88/LDAP/blob/master/glosario.md#postaladdress)
+- [physicalDeliveryOfficeName](https://github.com/PalomaR88/LDAP/blob/master/glosario.md#physicaldeliveryofficename)
+- [st](https://github.com/PalomaR88/LDAP/blob/master/glosario.md#st)
+- [l](https://github.com/PalomaR88/LDAP/blob/master/glosario.md#l)
+- [description](https://github.com/PalomaR88/LDAP/blob/master/glosario.md#description)
 
 # atributos
 #### ou 	

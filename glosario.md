@@ -1,7 +1,7 @@
 # objectClass
 #### posixAccount: 	
 Obligatorios:
-- cn 
+- [cn](https://github.com/PalomaR88/LDAP/blob/master/glosario.md#cn) 
 - uid 
 - uidNumber 
 - gidNumber 
@@ -27,3 +27,12 @@ ObjectClass:
 - applicationEntity
 - posixAccount
 - device
+
+#### uid 
+#### uidNumber 
+#### gidNumber 
+####  homeDirectory
+#### userPassword 
+#### loginShell 
+#### gecos 
+#### description 

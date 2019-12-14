@@ -17,33 +17,33 @@ Esquema: nis.schema
 
 #### inetOrgPerson:
 No obligatorios:
-- audio 
-- businessCategory 
-- carLicense 
-- departmentNumber 
-- displayName 
-- employeeNumber 
-- employeeType 
-- givenName 
-- homePhone 
-- homePostalAddress 
-- initials 
-- jpegPhoto 
-- labeledURI 
-- mail 
-- manager 
-- mobile 
-- o 
-- pager 
-- photo 
-- roomNumber 
-- secretary 
-- uid 
-- userCertificate 
-- x500uniqueIdentifier 
-- preferredLanguage 
-- userSMIMECertificate 
-- userPKCS12
+- [audio](https://github.com/PalomaR88/LDAP/blob/master/glosario.md#audio) 
+- [businessCategory](https://github.com/PalomaR88/LDAP/blob/master/glosario.md#businesscategory) 
+- [carLicense](https://github.com/PalomaR88/LDAP/blob/master/glosario.md#carlicense) 
+- [departmentNumber](https://github.com/PalomaR88/LDAP/blob/master/glosario.md#departmentnumber) 
+- [displayName](https://github.com/PalomaR88/LDAP/blob/master/glosario.md#displayname) 
+- [employeeNumber](https://github.com/PalomaR88/LDAP/blob/master/glosario.md#employeenumber) 
+- [employeeType](https://github.com/PalomaR88/LDAP/blob/master/glosario.md#employeenumber) 
+- [givenName](https://github.com/PalomaR88/LDAP/blob/master/glosario.md#givenname) 
+- [homePhone](https://github.com/PalomaR88/LDAP/blob/master/glosario.md#homephone) 
+- [homePostalAddress](https://github.com/PalomaR88/LDAP/blob/master/glosario.md#homepostaladdress) 
+- [initials](https://github.com/PalomaR88/LDAP/blob/master/glosario.md#initials) 
+- [jpegPhoto](https://github.com/PalomaR88/LDAP/blob/master/glosario.md#jpegphoto) 
+- [labeledURI](https://github.com/PalomaR88/LDAP/blob/master/glosario.md#labeleduri)
+- [mail](https://github.com/PalomaR88/LDAP/blob/master/glosario.md#mail) 
+- [manager](https://github.com/PalomaR88/LDAP/blob/master/glosario.md#manager) 
+- [mobile](https://github.com/PalomaR88/LDAP/blob/master/glosario.md#mobile) 
+- [o](https://github.com/PalomaR88/LDAP/blob/master/glosario.md#o) 
+- [pager](https://github.com/PalomaR88/LDAP/blob/master/glosario.md#pager) 
+- [photo](https://github.com/PalomaR88/LDAP/blob/master/glosario.md#photo) 
+- [roomNumber](https://github.com/PalomaR88/LDAP/blob/master/glosario.md#roomnumber) 
+- [secretary](https://github.com/PalomaR88/LDAP/blob/master/glosario.md#secretary) 
+- [uid](https://github.com/PalomaR88/LDAP/blob/master/glosario.md#uid) 
+- [userCertificate](https://github.com/PalomaR88/LDAP/blob/master/glosario.md#usercertificate) 
+- [x500uniqueIdentifier](https://github.com/PalomaR88/LDAP/blob/master/glosario.md#x500uniqueidentifier) 
+- [preferredLanguage](https://github.com/PalomaR88/LDAP/blob/master/glosario.md#preferredlanguage)
+- [userSMIMECertificate](https://github.com/PalomaR88/LDAP/blob/master/glosario.md#usersmimecertificate) 
+- [userPKCS12](https://github.com/PalomaR88/LDAP/blob/master/glosario.md#userpkcs12)
 
 
 # atributos
@@ -65,7 +65,7 @@ Nombre de usuario/valor único.
 
 ObjectClass:
 - account
-- inetOrgPerson
+- [inetOrgPerson](https://github.com/PalomaR88/LDAP/blob/master/glosario.md#inetorgperson)
 - [posixAccount](https://github.com/PalomaR88/LDAP/blob/master/glosario.md#posixaccount)
 
 #### uidNumber 
@@ -111,149 +111,168 @@ ObjectClass:
 - [posixAccount](https://github.com/PalomaR88/LDAP/blob/master/glosario.md#posixaccount)
 
 #### audio 
+Permite almacenar audio.
 
 ObjectClass:
 - [inetOrgPerson](https://github.com/PalomaR88/LDAP/blob/master/glosario.md#inetorgperson)
 
 #### businessCategory 
+Categoría de negocio.
 
 ObjectClass:
 - [inetOrgPerson](https://github.com/PalomaR88/LDAP/blob/master/glosario.md#inetorgperson)
 
 
 #### carLicense 
+Valores de licencia o placa de matrícula.
 
 ObjectClass:
 - [inetOrgPerson](https://github.com/PalomaR88/LDAP/blob/master/glosario.md#inetorgperson)
 
 
 #### departmentNumber 
+Numero de departamento.
 
 ObjectClass:
 - [inetOrgPerson](https://github.com/PalomaR88/LDAP/blob/master/glosario.md#inetorgperson)
 
 
 #### displayName 
+Identificación por nombre.
 
 ObjectClass:
 - [inetOrgPerson](https://github.com/PalomaR88/LDAP/blob/master/glosario.md#inetorgperson)
 
 
 #### employeeNumber 
+Número de empleado.
 
 ObjectClass:
 - [inetOrgPerson](https://github.com/PalomaR88/LDAP/blob/master/glosario.md#inetorgperson)
 
 
 #### employeeType 
+Tipo de empleado.
 
 ObjectClass:
 - [inetOrgPerson](https://github.com/PalomaR88/LDAP/blob/master/glosario.md#inetorgperson)
 
 
 #### givenName 
+Nombre de pila.
 
 ObjectClass:
 - [inetOrgPerson](https://github.com/PalomaR88/LDAP/blob/master/glosario.md#inetorgperson)
 
 
 #### homePhone 
+Teléfono de casa.
 
 ObjectClass:
 - [inetOrgPerson](https://github.com/PalomaR88/LDAP/blob/master/glosario.md#inetorgperson)
 
 
 #### homePostalAddress 
+Dirección postal.
 
 ObjectClass:
 - [inetOrgPerson](https://github.com/PalomaR88/LDAP/blob/master/glosario.md#inetorgperson)
 
 
 #### initials 
+Iniciales.
 
 ObjectClass:
 - [inetOrgPerson](https://github.com/PalomaR88/LDAP/blob/master/glosario.md#inetorgperson)
 
 
 #### jpegPhoto 
+Fichero jpeg (imagen).
 
 ObjectClass:
 - [inetOrgPerson](https://github.com/PalomaR88/LDAP/blob/master/glosario.md#inetorgperson)
 
 
 #### labeledURI 
+Etiqueta de URI.
 
 ObjectClass:
 - [inetOrgPerson](https://github.com/PalomaR88/LDAP/blob/master/glosario.md#inetorgperson)
 
 
 #### mail 
+Correo.
 
 ObjectClass:
 - [inetOrgPerson](https://github.com/PalomaR88/LDAP/blob/master/glosario.md#inetorgperson)
 
 
 #### manager 
+Gerente.
 
 ObjectClass:
 - [inetOrgPerson](https://github.com/PalomaR88/LDAP/blob/master/glosario.md#inetorgperson)
 
 
 #### mobile 
+Teléfono móvil.
 
 ObjectClass:
 - [inetOrgPerson](https://github.com/PalomaR88/LDAP/blob/master/glosario.md#inetorgperson)
 
 
 #### o 
+Organización.
 
 ObjectClass:
 - [inetOrgPerson](https://github.com/PalomaR88/LDAP/blob/master/glosario.md#inetorgperson)
 
 
 #### pager 
+Busca.
 
 ObjectClass:
 - [inetOrgPerson](https://github.com/PalomaR88/LDAP/blob/master/glosario.md#inetorgperson)
 
 
 #### photo 
+Foto.
 
 ObjectClass:
 - [inetOrgPerson](https://github.com/PalomaR88/LDAP/blob/master/glosario.md#inetorgperson)
 
 
 #### roomNumber 
+Número de habitación.
 
 ObjectClass:
 - [inetOrgPerson](https://github.com/PalomaR88/LDAP/blob/master/glosario.md#inetorgperson)
 
 
 #### secretary 
+Secretario.
 
 ObjectClass:
 - [inetOrgPerson](https://github.com/PalomaR88/LDAP/blob/master/glosario.md#inetorgperson)
 
-
-#### uid 
-
-ObjectClass:
-- [inetOrgPerson](https://github.com/PalomaR88/LDAP/blob/master/glosario.md#inetorgperson)
 
 
 #### userCertificate 
+Certificado de usuario.
 
 ObjectClass:
 - [inetOrgPerson](https://github.com/PalomaR88/LDAP/blob/master/glosario.md#inetorgperson)
 
 
 #### x500uniqueIdentifier 
+Método binario de identificación útil para diferenciar objetos.
 
 ObjectClass:
 - [inetOrgPerson](https://github.com/PalomaR88/LDAP/blob/master/glosario.md#inetorgperson)
 
 
 #### preferredLanguage 
+Preferencia de idioma.
 
 ObjectClass:
 - [inetOrgPerson](https://github.com/PalomaR88/LDAP/blob/master/glosario.md#inetorgperson)

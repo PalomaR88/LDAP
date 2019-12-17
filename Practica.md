@@ -427,7 +427,7 @@ access to <qué> [by <quién> [<acceso>] [<control>]]
 Y los priviledios son:
 
 Nivel de acceso |   Privilegios |   Descripción
-|:-------------:|:-------------:|:---------------------------------------------------:|
+|:-------------:|:-------------:|:---------------------------------------------------|
 none            |0              |sin acceso
 disclose        |d              |necesario para información en caso de error
 auth            |dx             |necesario para autenticación (bind)

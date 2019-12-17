@@ -419,7 +419,23 @@ memberOf: cn=almacen,ou=Group,dc=paloma,dc=gonzalonazareno,dc=org
 
 ### Crea las ACLs necesarias para que los usuarios del grupo almacen puedan ver todos los atributos de todos los usuarios pero solo puedan modificar las suyas
 
+La sintaxis para crear ACLs es la siguiente:
+~~~
+access to <qué> [by <quién> [<acceso>] [<control>]]
+~~~
 
+Y los priviledios son:
+- none          0       sin acceso
+- disclose      d       necesario para información en caso de error
+- auth          dx 	    necesario para autenticación (bind)
+- compare       cdx     necesario para comparar
+- search        scdx    necesario para aplicar los filtros de búsqueda
+- read          rscdx   necesario para leer los resultados de la búsqueda
+- add|delete}   wrscdx 	necesario para modifica
+- manage        mwrscdx necesario para gestionar 
+
+
+access to People by People, memberof=almacen read
 
 ### Crea las ACLs necesarias para que los usuarios del grupo admin puedan ver y modificar cualquier atributo de cualquier objeto
 

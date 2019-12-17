@@ -234,37 +234,37 @@ Para ello se va a crear un fichero, grupousuarios.ldif
 dn: cn=comercial,ou=Group,dc=paloma,dc=gonzalonazareno,dc=org
 changetype:modify
 replace: member
-member: uid=paloma
+member: uid=paloma,ou=People,dc=paloma,dc=gonzalonazareno,dc=org
 
 dn: cn=almacen,ou=Group,dc=paloma,dc=gonzalonazareno,dc=org
 changetype:modify
 replace: member
-member: uid=alejanddro
+member: uid=alejandro,ou=People,dc=paloma,dc=gonzalonazareno,dc=org
 
 dn: cn=comercial,ou=Group,dc=paloma,dc=gonzalonazareno,dc=org
 changetype:modify
 add: member
-member: uid=fernando
+member: uid=fernando,ou=People,dc=paloma,dc=gonzalonazareno,dc=org
 
 dn: cn=almacen,ou=Group,dc=paloma,dc=gonzalonazareno,dc=org
 changetype:modify
 add: member
-member: uid=fernando
+member: uid=fernando,ou=People,dc=paloma,dc=gonzalonazareno,dc=org
 
 dn: cn=admin,ou=Group,dc=paloma,dc=gonzalonazareno,dc=org
 changetype:modify
 replace: member
-member: uid=francisco
+member: uid=francisco,ou=People,dc=paloma,dc=gonzalonazareno,dc=org
 
 dn: cn=comercial,ou=Group,dc=paloma,dc=gonzalonazareno,dc=org
 changetype:modify
 add: member
-member: uid=francisco
+member: uid=francisco,ou=People,dc=paloma,dc=gonzalonazareno,dc=org
 
 dn: cn=admin,ou=Group,dc=paloma,dc=gonzalonazareno,dc=org
 changetype:modify
 add: member
-member: uid=pablo
+member: uid=pablo,ou=People,dc=paloma,dc=gonzalonazareno,dc=org
 ~~~
 
 Se agregan los cambios:
@@ -325,17 +325,97 @@ result: 0 Success
 
 ### Modifica OpenLDAP apropiadamente para que se pueda obtener los grupos a los que pertenece cada usuario a través del atributo "memberOf"
 
-debian@croqueta:~$ sudo ldapadd -Q -Y EXTERNAL -H ldapi:/// -f memberof1.ldif 
+Se crea una serie de ficheros de configuración para añadir el módulo necesario para que aparezca el atributo memberOf.
+
+El primero de ellos lo vamos a llamar memberof_config.lif. Para cargar el módulo memberof.la y configurarlo.
+~~~
+dn: cn=module,cn=config
+cn: module
+objectClass: olcModuleList
+objectclass: top
+olcModuleLoad: memberof.la
+olcModulePath: /usr/lib/ldap
+
+dn: olcOverlay={0}memberof,olcDatabase={1}mdb,cn=config
+objectClass: olcConfig
+objectClass: olcMemberOf
+objectClass: olcOverlayConfig
+objectClass: top
+olcOverlay: memberof
+olcMemberOfDangling: ignore
+olcMemberOfRefInt: TRUE
+olcMemberOfGroupOC: groupOfNames
+olcMemberOfMemberAD: member
+olcMemberOfMemberOfAD: memberOf
+~~~
+
+El segundo y el tercer fichero es para agregar y configurar la integridad referencial, es decir, hay que crear una relación entre los objetos grupos y usuarios y que estos no pierdan coherencia. 
+~~~
+dn: cn=module,cn=config
+cn: module
+objectclass: olcModuleList
+objectclass: top
+olcmoduleload: refint.la
+olcmodulepath: /usr/lib/ldap
+
+dn: olcOverlay={1}refint,olcDatabase={1}mdb,cn=config
+objectClass: olcConfig
+objectClass: olcOverlayConfig
+objectClass: olcRefintConfig
+objectClass: top
+olcOverlay: {1}refint
+olcRefintAttribute: memberof member manager owne
+~~~
+
+~~~
+dn: olcOverlay=memberof,olcDatabase={1}mdb,cn=config
+objectClass: olcOverlayConfig
+objectClass: olcMemberOf
+olcOverlay: memberof
+olcMemberOfRefint: TRUE
+~~~
+
+Cargar los tres nuevos ficheros .ldif creados:
+~~~
+debian@croqueta:~$ sudo ldapadd -Q -Y EXTERNAL -H ldapi:/// -f memberof_config.lif.ldif 
 adding new entry "cn=module,cn=config"
 
 adding new entry "olcOverlay={0}memberof,olcDatabase={1}mdb,cn=config"
 
 
-debian@croqueta:~$ sudo ldapadd -Q -Y EXTERNAL -H ldapi:/// -f memberof2.ldif 
+debian@croqueta:~$ sudo ldapadd -Q -Y EXTERNAL -H ldapi:/// -f refint1.ldif
 adding new entry "cn=module,cn=config"
 
 adding new entry "olcOverlay={1}refint,olcDatabase={1}mdb,cn=config"
 
+sudo ldapadd -Q -Y EXTERNAL -H ldapi:/// -f refint2.ldif
+  adding new entry "olcOverlay={1}refint,olcDatabase={1}hdb,cn=config"
+  ldap_add: No such object (32)
+  	matched DN: cn=config
+~~~
+
+> Para que los cambios en se realicen sobre los grupos ya creados se deben eliminar estos objetos y volver a crearlos.
+~~~
+debian@croqueta:~$ sudo ldapdelete -x -D "cn=admin,dc=paloma,dc=gonzalonazareno,dc=org" 'cn=comercial,ou=Group,dc=paloma,dc=gonzalonazareno,dc=org' -WEnter LDAP Password: 
+debian@croqueta:~$ sudo ldapdelete -x -D "cn=admin,dc=paloma,dc=gonzalonazareno,dc=org" 'cn=almacen,ou=Group,dc=paloma,dc=gonzalonazareno,dc=org' -WEnter LDAP Password: 
+debian@croqueta:~$ sudo ldapdelete -x -D "cn=admin,dc=paloma,dc=gonzalonazareno,dc=org" 'cn=admin,ou=Group,dc=paloma,dc=gonzalonazareno,dc=org' -W
+Enter LDAP Password: 
+~~~
+
+Y se vuelve a añadir el fichero grupos.ldif y las modificaciones de los grupos, con la relación entre los grupos y los usuarios, que se había guardado en el fichero gruposusuarios.ldif.
+
+Comprobación. Como memberOf no es parte de la configuración básica de LDAP, para que aparezca al realizar una búsqueda hay que especificar que éste aparezca:
+~~~
+debian@croqueta:~$ ldapsearch -LL -Y EXTERNAL -H ldapi:/// "(uid=fernando)" -b dc=paloma,dc=gonzalonazareno,dc=org memberOf
+SASL/EXTERNAL authentication started
+SASL username: gidNumber=1000+uidNumber=1000,cn=peercred,cn=external,cn=auth
+SASL SSF: 0
+version: 1
+
+dn: uid=fernando,ou=People,dc=paloma,dc=gonzalonazareno,dc=org
+memberOf: cn=comercial,ou=Group,dc=paloma,dc=gonzalonazareno,dc=org
+memberOf: cn=almacen,ou=Group,dc=paloma,dc=gonzalonazareno,dc=org
+~~~
 
 ### Crea las ACLs necesarias para que los usuarios del grupo almacen puedan ver todos los atributos de todos los usuarios pero solo puedan modificar las suyas
 

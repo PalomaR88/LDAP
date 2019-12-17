@@ -101,7 +101,7 @@ dn: uid=miguel,ou=People,dc=paloma,dc=gonzalonazareno,dc=org
 objectClass: top
 objectClass: posixAccount
 objectClass: inetOrgPerson
-cn: Miguel Angel Buonaroti
+cn: Miguel Angel Buonarotti
 uid: miguel
 uidNumber: 2005
 gidNumber: 2505
@@ -110,13 +110,13 @@ loginShell: /bin/bash
 userPassword: {SSHA}hS9wbekVRiaxKCxbdqOS8903Q1zpcl6A
 mail: miguelA@gmail.com
 givenName: miguel
-sn: Bounaroti
+sn: Bounarotti
 
 dn: uid=rafael,ou=People,dc=paloma,dc=gonzalonazareno,dc=org
 objectClass: top
 objectClass: posixAccount
 objectClass: inetOrgPerson
-cn: Rafael de Sancio
+cn: Rafael de Sanzio
 uid: rafael
 uidNumber: 2006
 gidNumber: 2506
@@ -125,13 +125,13 @@ loginShell: /bin/bash
 userPassword: {SSHA}i5tHsYfYE+1A3YpDBzQ/BR8CorIUNGdd
 mail: rafaelSancio@gmail.com
 givenName: rafael
-sn: Sancio
+sn: Sanzio
 
 dn: uid=remedios,ou=People,dc=paloma,dc=gonzalonazareno,dc=org
 objectClass: top
 objectClass: posixAccount
 objectClass: inetOrgPerson
-cn: Remedios Baro
+cn: Remedios Varo
 uid: ramedios
 uidNumber: 2007
 gidNumber: 2507
@@ -140,7 +140,7 @@ loginShell: /bin/bash
 userPassword: {SSHA}91QjalZLUGdIRNJ+ijP+LQ28Vboz7Qsv
 mail: remediosbaro@gmail.com
 givenName: remedios
-sn: Baro
+sn: Varo
 
 dn: uid=frida,ou=People,dc=paloma,dc=gonzalonazareno,dc=org
 objectClass: top
@@ -418,27 +418,15 @@ memberOf: cn=almacen,ou=Group,dc=paloma,dc=gonzalonazareno,dc=org
 ~~~
 
 ### Crea las ACLs necesarias para que los usuarios del grupo almacen puedan ver todos los atributos de todos los usuarios pero solo puedan modificar las suyas
+Para saber más sobre la configuración y la sintaxis de las ACLs consultar [el punto dedicado a ello](copiarurl) de los apuntes [Primeros pasos en LDAP](copiarURL).
 
-La sintaxis para crear ACLs es la siguiente:
+La creación de las ACLs del ejercicio sería:
 ~~~
-access to <qué> [by <quién> [<acceso>] [<control>]]
+access to dn.regex="uid=[a-zA-z0-9]*,ou=People,dc=amorales,dc=gonzalonazareno,dc=org"
+    by self write
+
+access to dn.subtree="ou=People,dc=paloma,dc=gonzalonazareno,dc=org" by dn.member="cn=almacen,ou=Group,dc=amorales,dc=gonzalonazareno,dc=org" read
 ~~~
-
-Y los priviledios son:
-
-Nivel de acceso |   Privilegios |   Descripción
-|:-------------:|:-------------:|:---------------------------------------------------|
-none            |0              |sin acceso
-disclose        |d              |necesario para información en caso de error
-auth            |dx             |necesario para autenticación (bind)
-compare         |cdx            |necesario para comparar
-search          |scdx           |necesario para aplicar los filtros de búsqueda
-read            |rscdx          |necesario para leer los resultados de la búsqueda
-add|delete      |wrscdx 	    |necesario para modifica
-manage          |mwrscdx        |necesario para gestionar 
-
-
-access to People by People, memberof=almacen read
 
 ### Crea las ACLs necesarias para que los usuarios del grupo admin puedan ver y modificar cualquier atributo de cualquier objeto
 

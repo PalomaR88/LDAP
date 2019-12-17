@@ -425,14 +425,17 @@ access to <qué> [by <quién> [<acceso>] [<control>]]
 ~~~
 
 Y los priviledios son:
-- none          0       sin acceso
-- disclose      d       necesario para información en caso de error
-- auth          dx 	    necesario para autenticación (bind)
-- compare       cdx     necesario para comparar
-- search        scdx    necesario para aplicar los filtros de búsqueda
-- read          rscdx   necesario para leer los resultados de la búsqueda
-- add|delete}   wrscdx 	necesario para modifica
-- manage        mwrscdx necesario para gestionar 
+
+Nivel de acceso |   Privilegios |   Descripción
+|:-------------:|:-------------:|:---------------------------------------------------:|
+none            |0              |sin acceso
+disclose        |d              |necesario para información en caso de error
+auth            |dx             |necesario para autenticación (bind)
+compare         |cdx            |necesario para comparar
+search          |scdx           |necesario para aplicar los filtros de búsqueda
+read            |rscdx          |necesario para leer los resultados de la búsqueda
+add|delete      |wrscdx 	    |necesario para modifica
+manage          |mwrscdx        |necesario para gestionar 
 
 
 access to People by People, memberof=almacen read

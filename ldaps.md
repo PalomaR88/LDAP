@@ -4,11 +4,11 @@ Se puede ver la documentación sobre la creación de claves y certificados firma
 
 Tras crear los certificados y ubicarlos en /etc/ssl/certs/paloma.gonzalonazareno.org.crt, /etc/ssl/certs/IESGonzaloNazareno.crt y /etc/ssl/private/gonzalonazareno.pem hay que cambiar las ACL con el comando **setfacl** para agregar permisos:
 ~~~
-debian@croqueta:~$ sudo setfacl -m u:openldap:r-x /etc/ssl/private
-debian@croqueta:~$ sudo setfacl -m u:openldap:r-x /etc/ssl/private/gonzalonazareno.pem
-debian@croqueta:~$ sudo setfacl -m u:openldap:r-x /etc/ssl/certs
-debian@croqueta:~$ sudo setfacl -m u:openldap:r-x /etc/ssl/certs/IESGonzaloNazareno.crt
-debian@croqueta:~$ sudo setfacl -m u:openldap:r-x /etc/ssl/certs/paloma.gonzalonazareno.org.crt
+debian@croqueta:~$ sudo setfacl -m u:openldap:r-x /etc/ssl/openldap
+debian@croqueta:~$ sudo setfacl -m u:openldap:r-x /etc/ssl/openldap/gonzalonazareno.pem
+debian@croqueta:~$ sudo setfacl -m u:openldap:r-x /etc/ssl/openldap
+debian@croqueta:~$ sudo setfacl -m u:openldap:r-x /etc/ssl/openldap/IESGonzaloNazareno.crt
+debian@croqueta:~$ sudo setfacl -m u:openldap:r-x /etc/ssl/openldap/paloma.gonzalonazareno.org.crt
 ~~~
 
 > Para el paso anterior es necesario tener instalado el paquete **acl**:
@@ -28,6 +28,13 @@ database        = $dir/index.txt        # database index file.
 #unique_subject = no                    # Set to 'no' to allow creation of
                                         # several certs with same subject.
 new_certs_dir   = $dir/newcerts         # default place for new certs.
+
+certificate     = $dir/certs    # The CA certificate
+serial          = $dir/serial           # The current serial number
+crlnumber       = $dir/crlnumber        # the current crl number
+                                        # must be commented out to leave $
+crl             = $dir/crl.pem          # The current CRL
+private_key     = $dir/private  # The private key
 ~~~
 
 ## Instalación de LDAP
@@ -39,13 +46,13 @@ Para la configuración de LDAPs se crea un fichero .ldif con el que se modificar
 dn: cn=config
 changetype: modify
 add: olcTLSCACertificateFile
-olcTLSCACertificateFile: /etc/ssl/certs/IESGonzaloNazareno.crt
+olcTLSCACertificateFile: /etc/ssl/openldap/IESGonzaloNazareno.crt
 -
 replace: olcTLSCertificateFile
-olcTLSCertificateFile: /etc/ssl/certs/paloma.gonzalonazareno.org.crt
+olcTLSCertificateFile: /etc/ssl/openldap/paloma.gonzalonazareno.org.crt
 -
 replace: olcTLSCertificateKeyFile
-olcTLSCertificateKeyFile: /etc/ssl/private/gonzalonazareno.pem
+olcTLSCertificateKeyFile: /etc/ssl/openldap/gonzalonazareno.pem
 ~~~
 
 Y se añaden los cambios que se han configurado en ldaps.ldif:
@@ -79,4 +86,32 @@ TLS_CACERT      /etc/ssl/certs/IESGonzaloNazareno.crt
 Y se restaura el servicio de slapd:
 ~~~
 debian@croqueta:/etc/ldap$ sudo systemctl restart slapd
+~~~
+
+Comprobación:
+~~~
+debian@croqueta:~$ sudo ldapsearch -x -H ldap://croqueta.paloma.gonzalonazareno.org:636 -b "cn=admin,dc=paloma,dc=gonzalonazareno,dc=org"
+ldap_result: Can't contact LDAP server (-1)
+debian@croqueta:~$ sudo ldapsearch -x -H ldaps://croqueta.paloma.gonzalonazareno.org:636 -b "cn=admin,dc=paloma,dc=gonzalonazareno,dc=org"
+# extended LDIF
+#
+# LDAPv3
+# base <cn=admin,dc=paloma,dc=gonzalonazareno,dc=org> with scope subtree
+# filter: (objectclass=*)
+# requesting: ALL
+#
+
+# admin, paloma.gonzalonazareno.org
+dn: cn=admin,dc=paloma,dc=gonzalonazareno,dc=org
+objectClass: simpleSecurityObject
+objectClass: organizationalRole
+cn: admin
+description: LDAP administrator
+
+# search result
+search: 2
+result: 0 Success
+
+# numResponses: 2
+# numEntries: 1
 ~~~

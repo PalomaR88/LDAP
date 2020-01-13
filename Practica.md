@@ -294,25 +294,25 @@ dn: cn=admin,ou=Group,dc=paloma,dc=gonzalonazareno,dc=org
 objectClass: top
 objectClass: groupOfNames
 cn: admin
-member: uid=francisco
-member: uid=pablo
+member: uid=francisco,ou=People,dc=paloma,dc=gonzalonazareno,dc=org
+member: uid=pablo,ou=People,dc=paloma,dc=gonzalonazareno,dc=org
 
 # almacen, Group, paloma.gonzalonazareno.org
 dn: cn=almacen,ou=Group,dc=paloma,dc=gonzalonazareno,dc=org
 objectClass: top
 objectClass: groupOfNames
 cn: almacen
-member: uid=alejanddro
-member: uid=fernando
+member: uid=alejandro,ou=People,dc=paloma,dc=gonzalonazareno,dc=org
+member: uid=fernando,ou=People,dc=paloma,dc=gonzalonazareno,dc=org
 
 # comercial, Group, paloma.gonzalonazareno.org
 dn: cn=comercial,ou=Group,dc=paloma,dc=gonzalonazareno,dc=org
 objectClass: top
 objectClass: groupOfNames
 cn: comercial
-member: uid=paloma
-member: uid=fernando
-member: uid=francisco
+member: uid=paloma,ou=People,dc=paloma,dc=gonzalonazareno,dc=org
+member: uid=fernando,ou=People,dc=paloma,dc=gonzalonazareno,dc=org
+member: uid=francisco,ou=People,dc=paloma,dc=gonzalonazareno,dc=org
 
 # search result
 search: 2
@@ -420,13 +420,80 @@ memberOf: cn=almacen,ou=Group,dc=paloma,dc=gonzalonazareno,dc=org
 ### Crea las ACLs necesarias para que los usuarios del grupo almacen puedan ver todos los atributos de todos los usuarios pero solo puedan modificar las suyas
 Para saber más sobre la configuración y la sintaxis de las ACLs consultar [el punto dedicado a ello](copiarurl) de los apuntes [Primeros pasos en LDAP](copiarURL).
 
-La creación de las ACLs del ejercicio sería:
+Se va a utilizar como prueba al usuario fernando que forma parte del grupo almacen. Se crear un fichero para la modificación de este usuario usuario:
 ~~~
-access to dn.regex="uid=[a-zA-z0-9]*,ou=People,dc=amorales,dc=gonzalonazareno,dc=org"
-    by self write
+dn: uid=fernando,ou=People,dc=paloma,dc=gonzalonazareno,dc=org
+changetype: modify
+replace: mail
+mail: emailcambio@gmail.com
+~~~
 
-access to dn.subtree="ou=People,dc=paloma,dc=gonzalonazareno,dc=org" by dn.member="cn=almacen,ou=Group,dc=amorales,dc=gonzalonazareno,dc=org" read
+Y se comprueba que el usuario no puede cambiar sus atributos:
 ~~~
+debian@croqueta:~$ ldapmodify -x -D cn=fernando,dc=paloma,dc=gonzalonazareno,dc=org -W -f pruebaacl1.ldif
+Enter LDAP Password: 
+ldap_bind: Invalid credentials (49)
+~~~
+
+Se va a crear otro fichero para modificar un usuario diferente a fernando:
+~~~
+dn: uid=paloma,ou=People,dc=paloma,dc=gonzalonazareno,dc=org
+changetype: modify
+replace: mail
+mail: emailcambio@gmail.com
+~~~
+
+Y se comprueba que tampoco permite modificar los datos de este usuario:
+~~~
+debian@croqueta:~$ ldapmodify -x -D cn=fernando,dc=paloma,dc=gonzalonazareno,dc=org -W -f pruebaacl2.ldif 
+Enter LDAP Password: 
+ldap_bind: Invalid credentials (49)
+~~~
+
+Se configura la acl en un fichero que se va a llamar modifyAlmacenes.ldif:
+~~~
+dn: olcDatabase={1}mdb,cn=config
+changetype: modify
+add: olcAccess: {3}to dn.children="dc=paloma,dc=gonzalonazareno,dc=org" by group.exact="cn=almacen,ou=Group,dc=paloma,dc=gonzalonazareno,dc=org" self write
+~~~
+
+group/almacen/member="cn=almacen,ou=Group,dc=paloma,dc=gonzalonazareno,dc=org" self write
+
+="cn=almacen,ou=Group,dc=paloma,dc=gonzalonazareno,dc=org" self write
+
+dn: olcDatabase={1}mdb,cn=config
+changetype: modify
+add: olcAccess: {3}to dn.children="cn=almacen,ou=Group,dc=paloma,dc=gonzalonazareno,dc=org" by group.exact="cn=almacen,ou=Group,dc=paloma,dc=gonzalonazareno,dc=org" self write
+
+ cn=almacen,ou=Group,dc=paloma,dc=gonzalonazareno,dc=org
+
+
+attrs.regex="uid=[a-zA-z0-9]*,ou=People,dc=paloma,dc=gonzalonazareno,dc=org"
+    by 
+~~~
+
+debian@croqueta:~$ sudo ldapmodify -Y EXTERNAL -H ldapi:/// -f modifyAlmacenes.ldif
+SASL/EXTERNAL authentication started
+SASL username: gidNumber=0+uidNumber=0,cn=peercred,cn=external,cn=auth
+SASL SSF: 0
+modifying entry "olcDatabase={1}mdb,cn=config"
+ldap_modify: No such object (32)
+	matched DN: cn=config
+
+
+debian@croqueta:~$ sudo ldapmodify -Y EXTERNAL -H ldapi:/// -f modifyAlmacenes.ldif
+SASL/EXTERNAL authentication started
+SASL username: gidNumber=0+uidNumber=0,cn=peercred,cn=external,cn=auth
+SASL SSF: 0
+modifying entry "olcDatabase={1}mdb,cn=config"
+
+
+
+sudo ldapmodify -Y EXTERNAL -H ldapi:/// -f modifyAlmacenes.ldif
+
+
+ldapmodify -x -D cn=admin,dc=paloma,dc=gonzalonazareno,dc=org -W -f modifyAlmacenes.ldif
+
 
 ### Crea las ACLs necesarias para que los usuarios del grupo admin puedan ver y modificar cualquier atributo de cualquier objeto
 

@@ -3,9 +3,18 @@
 ### Creación de usuarios
 Se van a crear 10 usuarios con nombres en LDAP. Serán objetos de tipo posixAccount e inetOrgPerson con un atributo userPassword.
 
-Se buscan los atributos que contienen las clases [posixAccount](https://github.com/PalomaR88/LDAP/blob/master/glosario.md#posixaccount) e [inetOrgPerson](https://github.com/PalomaR88/LDAP/blob/master/glosario.md#inetorgperson), además de los demás objectClass que serán necesarios para el ejercicio. Se va a usar la página [zytrax](https://www.zytrax.com/books/ldap/ape/) gracias a la cual, se va a crear un glosario con los principales objectClass y sus atributos [aquí](https://github.com/PalomaR88/LDAP/blob/master/glosario.md).
+Se buscan los atributos que contienen las clases que se piden:
+**posixAccount**
+- Obligatorios: cn, uid, uidNumber, gidNumber, homeDirectory.
+- No obligatorios: userPassword, loginShell, gecos, description.
 
-En primer lugar se crea la unidad organizativa usuarios que se añadirán a través del fichero unidadOrgPeople.ldif con los objectClass [top](https://github.com/PalomaR88/LDAP/blob/master/glosario.md#top) y [organizationalUnit](https://github.com/PalomaR88/LDAP/blob/master/glosario.md#organizationalunit):
+**inetOrgPerson**
+- No obligatorios: audio, businessCategory, carLicense, departmentNumber, displayName, employeeNumber, employeeType, givenName, homePhone, homePostalAddress, initials, jpegPhoto, labeledURI, mail, manager, mobile, o, pager, photo, roomNumber, secretary, uid, userCertificate, x500uniqueIdentifier, preferredLanguage,
+userSMIMECertificate, userPKCS12.
+
+Además de los demás objectClass que serán necesarios para el ejercicio. Se va a usar la página [zytrax](https://www.zytrax.com/books/ldap/ape/).
+
+En primer lugar se crea la unidad organizativa usuarios que se añadirán a través del fichero unidadOrgPeople.ldif con los objectClass: top y organizationalUnit:
 ~~~
 dn: ou=People,dc=paloma,dc=gonzalonazareno,dc=org
 objectClass: top
@@ -418,7 +427,7 @@ memberOf: cn=almacen,ou=Group,dc=paloma,dc=gonzalonazareno,dc=org
 ~~~
 
 ### Crea las ACLs necesarias para que los usuarios del grupo almacen puedan ver todos los atributos de todos los usuarios pero solo puedan modificar las suyas
-Para saber más sobre la configuración y la sintaxis de las ACLs consultar [el punto dedicado a ello](copiarurl) de los apuntes [Primeros pasos en LDAP](copiarURL).
+Para saber más sobre la configuración y la sintaxis de las ACLs consultar [el punto dedicado a ello](https://github.com/PalomaR88/LDAP/blob/master/Primeros_pasos_LDAP.md#acls) de los apuntes [Primeros pasos en LDAP](https://github.com/PalomaR88/LDAP/blob/master/Primeros_pasos_LDAP.md).
 
 Se va a utilizar como prueba al usuario fernando que forma parte del grupo almacen. Se crear un fichero para la modificación de este usuario usuario:
 ~~~
@@ -429,10 +438,14 @@ mail: emailcambio@gmail.com
 ~~~
 
 Y se comprueba que el usuario no puede cambiar sus atributos:
+
+ldapmodify -x -D uid=fernando,ou=People,dc=paloma,dc=gonzalonazareno,dc=org -W -f pruebaacl1.ldif
+
 ~~~
-debian@croqueta:~$ ldapmodify -x -D cn=fernando,dc=paloma,dc=gonzalonazareno,dc=org -W -f pruebaacl1.ldif
+debian@croqueta:~$ ldapmodify -x -D uid=fernando,ou=People,dc=paloma,dc=gonzalonazareno,dc=org -W -f pruebaacl1.ldif
 Enter LDAP Password: 
-ldap_bind: Invalid credentials (49)
+modifying entry "uid=fernando,ou=People,dc=paloma,dc=gonzalonazareno,dc=org"
+ldap_modify: Insufficient access (50)
 ~~~
 
 Se va a crear otro fichero para modificar un usuario diferente a fernando:
@@ -444,62 +457,58 @@ mail: emailcambio@gmail.com
 ~~~
 
 Y se comprueba que tampoco permite modificar los datos de este usuario:
+ldapmodify -x -D uid=fernando,ou=People,dc=paloma,dc=gonzalonazareno,dc=org -W -f pruebaacl1.ldif
+
 ~~~
-debian@croqueta:~$ ldapmodify -x -D cn=fernando,dc=paloma,dc=gonzalonazareno,dc=org -W -f pruebaacl2.ldif 
+debian@croqueta:~$ ldapmodify -x -D uid=fernando,ou=People,dc=paloma,dc=gonzalonazareno,dc=org -W -f pruebaacl2.ldif
 Enter LDAP Password: 
-ldap_bind: Invalid credentials (49)
+modifying entry "uid=paloma,ou=People,dc=paloma,dc=gonzalonazareno,dc=org"
+ldap_modify: Insufficient access (50)
 ~~~
 
 Se configura la acl en un fichero que se va a llamar modifyAlmacenes.ldif:
 ~~~
 dn: olcDatabase={1}mdb,cn=config
 changetype: modify
-add: olcAccess: {3}to dn.children="dc=paloma,dc=gonzalonazareno,dc=org" by group.exact="cn=almacen,ou=Group,dc=paloma,dc=gonzalonazareno,dc=org" self write
+add: olcAccess
+olcAccess: {3}to filter=(&(objectclass=inetOrgPerson)(memberof=cn=almacen,ou=Group,dc=paloma,dc=gonzalonazareno,dc=org)) by group.exact="cn=almacen,ou=Group,dc=paloma,dc=gonzalonazareno,dc=org" write 
 ~~~
 
-group/almacen/member="cn=almacen,ou=Group,dc=paloma,dc=gonzalonazareno,dc=org" self write
-
-="cn=almacen,ou=Group,dc=paloma,dc=gonzalonazareno,dc=org" self write
-
-dn: olcDatabase={1}mdb,cn=config
-changetype: modify
-add: olcAccess: {3}to dn.children="cn=almacen,ou=Group,dc=paloma,dc=gonzalonazareno,dc=org" by group.exact="cn=almacen,ou=Group,dc=paloma,dc=gonzalonazareno,dc=org" self write
-
- cn=almacen,ou=Group,dc=paloma,dc=gonzalonazareno,dc=org
-
-
-attrs.regex="uid=[a-zA-z0-9]*,ou=People,dc=paloma,dc=gonzalonazareno,dc=org"
-    by 
+Se añade la opción del fichero anterior:
 ~~~
-
-debian@croqueta:~$ sudo ldapmodify -Y EXTERNAL -H ldapi:/// -f modifyAlmacenes.ldif
+debian@croqueta:~$ sudo ldapmodify -Y EXTERNAL -H ldapi:/// -f modifyAlmacenes.ldif 
 SASL/EXTERNAL authentication started
 SASL username: gidNumber=0+uidNumber=0,cn=peercred,cn=external,cn=auth
 SASL SSF: 0
 modifying entry "olcDatabase={1}mdb,cn=config"
-ldap_modify: No such object (32)
-	matched DN: cn=config
+~~~
 
+Y se comprueba que ahora sí se puede realizar la modificación:
+~~~
+debian@croqueta:~$ sudo ldapmodify -x -D uid=fernando,ou=People,dc=paloma,dc=gonzalonazareno,dc=org -W -f pruebaacl1.ldif
+Enter LDAP Password: 
+modifying entry "uid=fernando,ou=People,dc=paloma,dc=gonzalonazareno,dc=org"
+~~~
 
-debian@croqueta:~$ sudo ldapmodify -Y EXTERNAL -H ldapi:/// -f modifyAlmacenes.ldif
-SASL/EXTERNAL authentication started
-SASL username: gidNumber=0+uidNumber=0,cn=peercred,cn=external,cn=auth
-SASL SSF: 0
-modifying entry "olcDatabase={1}mdb,cn=config"
+Y se comprueba que la modificación de otro usuario no funciona:
+~~~
+debian@croqueta:~$ sudo ldapmodify -x -D uid=fernando,ou=People,dc=paloma,dc=gonzalonazareno,dc=org -W -f pruebaacl2.ldif
+Enter LDAP Password: 
+modifying entry "uid=paloma,ou=People,dc=paloma,dc=gonzalonazareno,dc=org"
+ldap_modify: Insufficient access (50)
+~~~
 
-
-
-sudo ldapmodify -Y EXTERNAL -H ldapi:/// -f modifyAlmacenes.ldif
-
-
-ldapmodify -x -D cn=admin,dc=paloma,dc=gonzalonazareno,dc=org -W -f modifyAlmacenes.ldif
 
 
 ### Crea las ACLs necesarias para que los usuarios del grupo admin puedan ver y modificar cualquier atributo de cualquier objeto
-
+Para la configurar esta acl se crea el siguiente fichero de configuración:
+~~~
+dn: olcDatabase={1}hdb,cn=config
+changetype: modify
+add: olcAccess
+olcAccess: {4}to * by group.exact="cn=admin,ou=Group,dc=paloma,dc=gonzalonazareno,dc=org" write
+~~~
 
 # LDAPs
-### Configura el servidor LDAP de croqueta para que utilice el protocolo ldaps:// a la vez que el ldap:// utilizando el certificado x509 de la práctica de https o solicitando el correspondiente a través de gestiona.
-
-### Realiza las modificaciones adecuadas en el cliente ldap de croqueta para que todas las consultas se realicen por defecto utilizando ldaps://
+La configuración de LDAPs se encuentra en el siguiente [repositorio de GitHub](https://github.com/PalomaR88/LDAP/blob/master/ldaps.md).
 

@@ -395,11 +395,4 @@ dn: olcDatabase={<posición>}frontend,cn=config
 changetype: modify
 add: olcAccess
 olcAccess: {<posicion>} to <qué> [by <quién> <acceso> [<control>]]
-
-
-
-dn: olcDatabase={1}mdb,cn=config
-changetype: modify
-add: olcAccess
-olcAccess: {3}to attrs.regex="uid=[a-zA-z0-9]*,ou=People,dc=paloma,dc=gonzalonazareno,dc=org" filter=(memberof=almacen)
-    by self write
+~~~
